@@ -67,6 +67,8 @@ resource "azurerm_key_vault_key" "ml_kv_key" {
     "verify",
     "wrapKey",
   ]
+
+  depends_on = [ azurerm_role_assignment.key_vault_administrators ]
 }
 
 resource "azurerm_storage_account" "ml_storage" {
@@ -104,7 +106,7 @@ resource "azurerm_machine_learning_workspace" "ml_workspace" {
     key_id       = azurerm_key_vault_key.ml_kv_key.id
   }
 
-  depends_on = [ azurerm_role_assignment.ml_identity_kv_crypto_user, azurerm_role_assignment.ml_identity_kv_reader ]
+  depends_on = [azurerm_role_assignment.ml_identity_kv_crypto_user, azurerm_role_assignment.ml_identity_kv_reader]
 }
 
 resource "azurerm_role_assignment" "ml_administrators" {
